@@ -53,21 +53,15 @@ database.ref().on("child_added", function(Snapshot) {
 
     var firstTimeConverted = moment(firstTime, "HH:mm");
 
+    var diffTime = moment(firstTimeConverted).diff(moment(nextTime), "minutes");
 
+    minutesAway = diffTime;
+ 
 
-
-    var nextTime= moment(firstTimeConverted).add(diffTime, 'minutes');
+    var nextTime= moment(firstTimeConverted).add(Snapshot.val().frequency, 'minutes');
 
     nextTimeConverted= nextTime.format('hh:mm a');
 
-
-    console.log('firstTime', firstTime);
-
-
-    console.log('nextTime', nextTime);
-    console.log('minutesAway', minutesAway);
-    console.log('nextTimeConverted', nextTimeConverted);
-  
 
 
   
