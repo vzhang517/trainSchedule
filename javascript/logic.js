@@ -25,39 +25,48 @@ $("#submit").on("click", function(event){
   
     name = $("#trainName").val().trim();
     destination = $("#destination").val().trim();
-    // using moment to grab start date user submitted in order to be able to calculate months worked
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    firstTime= $("#firstTime").val().trim();
+    // var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
   
     //using .diff to subtract start date from current date, we want the result in months, turn result to an integer
     
     frequency = parseInt($("#frequency").val().trim());
-  
 
-    database.ref().push({
+    console.log($("#frequency").val());
+  
+    var obj = {
         name: name,
         destination: destination,
         firstTime: firstTime,
         frequency: frequency,  
         dateAdded: firebase.database.ServerValue.TIMESTAMP
-});
+    }
+
+    console.log('obj', obj);
+
+    database.ref().push(obj);
   });
 
 
 database.ref().on("child_added", function(Snapshot) {
     var firstTime= Snapshot.val().firstTime;
 
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-    var tRemainder = diffTime % Snapshot.val().frequency;
-    var minutesAway = Snapshot.val().frequency - tRemainder;
+    var firstTimeConverted = moment(firstTime, "HH:mm");
 
 
-    var nextTime= moment(firstTime).add(diffTime, 'minutes');
+
+
+    var nextTime= moment(firstTimeConverted).add(diffTime, 'minutes');
 
     nextTimeConverted= nextTime.format('hh:mm a');
 
-    console.log(nextTime);
+
+    console.log('firstTime', firstTime);
+
+
+    console.log('nextTime', nextTime);
+    console.log('minutesAway', minutesAway);
+    console.log('nextTimeConverted', nextTimeConverted);
   
 
 
